@@ -1,5 +1,5 @@
 name = FZ152
-description = Module helps to pass federal law 152 in Russina Federation.
+description = Module helps to pass federal law 152 in Russian Federation.
 core = 7.x
 
 dependencies[] = variable

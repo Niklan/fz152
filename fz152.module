@@ -5,3 +5,186 @@
  * Main file for hooks and custom functions.
  */
 
+/**
+ * Implements hook_permission().
+ */
+function fz152_permission() {
+  return array(
+    'administer fz152' => array(
+      'title' => t('Administer FZ152 settings'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function fz152_menu() {
+  $items['admin/config/system/fz152'] = array(
+    'title' => 'FZ152 settings',
+    'description' => t('Adjust settings for FZ152'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('variable_group_form', 'fz152_settings'),
+    'access arguments' => array('administer fz152'),
+    'file' => 'fz152.admin.inc',
+  );
+
+  $items['admin/config/system/fz152/settings'] = array(
+    'title' => 'Settings',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10
+  );
+
+  $items['admin/config/system/fz152/forms'] = array(
+    'title' => 'Forms',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -5,
+    'access arguments' => array('administer fz152'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('variable_group_form', 'fz152_forms'),
+    'file' => 'fz152.admin.inc',
+  );
+
+  if(variable_get_value('fz152_enable')) {
+    $path = variable_get_value('fz152_privacy_policy_page_path');
+    $title = variable_get_value('fz152_privacy_policy_page_title');
+    $items[$path] = array(
+      'title' => $title,
+      'title callback' => FALSE,
+      'page callback' => 'fz152_privacy_policy_page',
+      'access callback' => TRUE,
+    );
+  }
+
+  return $items;
+}
+
+/**
+ * Privacy policy page callback.
+ */
+function fz152_privacy_policy_page() {
+  $page_content = variable_get_value('fz152_privacy_policy_page_text');
+  return check_markup($page_content['value'], $page_content['format']);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function fz152_form_alter(&$form, &$form_state, $form_id) {
+  if (variable_get_value('fz152_enable')) {
+    $active_forms = fz152_info();
+    $pattern_for_forms = '';
+
+    // Implode all form id's in a single string. Which will be used for regex.
+    foreach ($active_forms as $k => $v) {
+      $pattern_for_forms .= $v['form_id'] . PHP_EOL;
+    }
+
+    $matches = fz152_form_id_matches($form_id, $pattern_for_forms);
+    if (!empty($matches)) {
+      $matched_form_id = $matches[0];
+      // Find checkbox weight by matched form id with available in array.
+      // Because we have support for wildcards, this is necessary.
+      $checkbox_weight = NULL;
+      foreach ($active_forms as $k => $v) {
+        $current_form_id = str_replace('*', '.*', $v['form_id']);
+        $pattern = "/$current_form_id/";
+        if (preg_match($pattern, $matched_form_id)) {
+          $checkbox_weight = $v['weight'];
+          break;
+        }
+      }
+
+      // Finally we add checkbox.
+      $form['fz152_agreement'] = array(
+        '#type' => 'checkbox',
+        '#required' => TRUE,
+        '#title' => variable_get_value('fz152_checkbox_title'),
+        // HTML5 support.
+        '#attributes' => array(
+          'required' => 'required',
+        ),
+      );
+
+      if ($checkbox_weight) {
+        $form['fz152_agreement']['#weight'] = $checkbox_weight;
+      }
+    }
+  }
+}
+
+/**
+ * Return array with form_id's and weight for checkbox if available.
+ *
+ * @example
+ * array(
+ *  0 => array(
+ *    'form_id' => 'news_node_form',
+ *    'weight' => 99,
+ *  ),
+ *  1 => array(
+ *    'form_id' => 'article_node_form',
+ *    'weight' => NULL,
+ *  ),
+ * );
+ * @endexample
+ */
+function fz152_get_forms() {
+  $forms_value = variable_get_value('fz152_forms');
+  $forms = array();
+
+  foreach (explode(PHP_EOL, $forms_value) as $form_id) {
+    $form_id_exploded = explode('|', $form_id);
+    $forms[] = array(
+      'form_id' => $form_id_exploded[0],
+      'weight' => isset($form_id_exploded[1]) ? $form_id_exploded[1] : NULL,
+    );
+  }
+
+  return $forms;
+}
+
+/**
+ * Check is provided form id is match any of patterns.
+ */
+function fz152_form_id_matches($form_id, $patterns) {
+  // Replace new lines by "|" and wildcard by ".*".
+  $to_replace = array(
+    '/(\r\n?|\n)/', // newlines
+    '/\\\\\*/', // asterisks
+  );
+
+  $replacements = array(
+    '|',
+    '.*',
+  );
+
+  $patterns_quoted = preg_quote($patterns, '/');
+  $pattern = '/^(' . preg_replace($to_replace, $replacements, $patterns_quoted) . ')$/';
+  preg_match($pattern, $form_id, $matches);
+  return $matches;
+}
+
+/**
+ * Invoke all hook_fz152_info().
+ */
+function fz152_info() {
+  $result = &drupal_static(__FUNCTION__);
+  if (!isset($result)) {
+    $result = array();
+    foreach (module_implements('fz152_info') as $module) {
+      $module_definition = module_invoke($module, 'fz152_info');
+      $result = $result + $module_definition;
+    }
+  }
+
+  drupal_alter('fz152_info', $result);
+  return $result;
+}
+
+/**
+ * Implements hook_fz152_info().
+ */
+function fz152_fz152_info() {
+  return fz152_get_forms();
+}
