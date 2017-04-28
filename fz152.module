@@ -45,7 +45,7 @@ function fz152_menu() {
     'file' => 'fz152.admin.inc',
   );
 
-  if(variable_get_value('fz152_enable')) {
+  if(variable_get_value('fz152_enable') && variable_get_value('fz152_privacy_policy_page_enable')) {
     $path = variable_get_value('fz152_privacy_policy_page_path');
     $title = variable_get_value('fz152_privacy_policy_page_title');
     $items[$path] = array(

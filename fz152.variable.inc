@@ -38,6 +38,15 @@ function fz152_variable_info($options) {
     'localize' => TRUE,
   );
 
+  $variables['fz152_privacy_policy_page_enable'] = array(
+    'type' => 'boolean',
+    'title' => t('Enable privacy policy page', array(), $options),
+    'default' => TRUE,
+    'description' => t('You can disable this page, if you have manually created.', array(), $options),
+    'group' => 'fz152_settings',
+    'localize' => TRUE,
+  );
+
   $variables['fz152_privacy_policy_page_title'] = array(
     'type' => 'string',
     'title' => t('Privacy policy page title', array(), $options),
