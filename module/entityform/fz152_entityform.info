@@ -1,0 +1,7 @@
+name = FZ152 — Entityform
+description = Integration with entityform forms.
+core = 7.x
+
+package = FZ152
+
+dependencies[] = fz152

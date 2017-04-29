@@ -90,8 +90,8 @@ function fz152_form_alter(&$form, &$form_state, $form_id) {
 
     // Parse all active forms.
     foreach ($modules_info as $k => $v) {
-      $forms_callback = $v['form callback'];
-      $active_forms += $forms_callback();
+      $form_callback = $v['form callback'];
+      $active_forms = array_merge($active_forms, $form_callback());
     }
 
     // Implode all form id's in a single string. Which will be used for regex.
