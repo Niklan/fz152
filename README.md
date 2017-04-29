@@ -4,6 +4,11 @@ This module helps you to bypass federal law 152 in Russian Federation.
 
 He provides simple tools and API to adding privacy policy page on the site and adds checkbox 'I agree to process my personal data' to any form you want it.
  
+**For what this module created**:
+
+- [Федеральный закон 152](http://www.consultant.ru/document/cons_doc_LAW_61801/) — reason for this module.
+- [Всем, у кого есть сайт! С 1 июля штрафы за нарушение закона о персональных данных увеличатся до 75 тысяч рублей](https://journal.tinkoff.ru/personalnye-dannye/)
+
 **Requirements**
 
 - [variable](https://www.drupal.org/project/variable) module
