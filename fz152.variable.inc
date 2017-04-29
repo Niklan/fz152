@@ -98,7 +98,6 @@ function fz152_variable_info($options) {
     'title' => t('Forms to apply checkbox', array(), $options),
     'description' => t('Each form id on the new line, this names are supports wildcard: *_node_form. Also you can specify weight for checkbox: node_edit_news|99.'),
     'default' => '',
-    'required' => TRUE,
     'group' => 'fz152_forms',
     'localize' => TRUE,
   );
