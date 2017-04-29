@@ -7,27 +7,36 @@
 
 /**
  * Implements hook_fz152_info().
- *
  * With this hook, every module can define form_id's with checkbox weights which
  * will be passed to core code and will add checkbox to the form if it match.
  *
- * @return array with form_id's and weights. If you don't know what weight to
- *               use, or don't need it, just pass NULL. form_id is support for
- *               wildcards.
+ * @return array
+ *   Information about module forms and their settings. Array key will be used
+ *   as path for settings. /admin/config/system/fz152/[key]. Possible values:
+ *   - "title": String with title for tab and page with settings.
+ *   - "weight": (optional) Int value with weight of tab with settings.
+ *   - "form callback": Function to invoke with all forms which must be altered.
+ *     array('form_id' => 'form_*_name', 'weight' => 0). Form id is supporting
+ *     for wildcard and weight is used for checkbox position in that form.
+ *   - "page callback": (optional) Function to invoke which return page for your
+ *     module in main tabs. If you don't need it, leave it empty.
+ *   - "page arguments": (optional) Array of arguments which will be passed to
+ *     page callback function if provided.
+ *
+ * @see fz152_fz152_info()
  */
 function hook_fz152_info() {
-  $forms = array(
-    array(
-      'form_id' => 'my_awesome_form',
-      'weight' => 99,
-    ),
-    array(
-      'form_id' => 'my_*_form',
-      'weight' => NULL,
-    ),
-  );
+  $info = [
+    'my-forms' => [
+      'title' => 'My forms settings',
+      'weight' => 0,
+      'form callback' => 'my_forms_forms',
+      'page callback' => 'my_forms_settings',
+      'page arguments' => array('arg1', 'arg2'),
+    ]
+  ];
 
-  return $forms;
+  return $info;
 }
 
 /**

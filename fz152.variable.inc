@@ -15,6 +15,12 @@ function fz152_variable_group_info() {
     'access' => 'administer site configuration',
   );
 
+  $groups['fz152_privacy_policy_page'] = array(
+    'title' => 'FZ152 Privacy policy page',
+    'description' => t('Settings for privacy policy page.'),
+    'access' => 'administer site configuration',
+  );
+
   $groups['fz152_forms'] = array(
     'title' => 'FZ152 Forms',
     'description' => t('Form settings for FZ152'),
@@ -38,12 +44,23 @@ function fz152_variable_info($options) {
     'localize' => TRUE,
   );
 
+  $variables['fz152_checkbox_title'] = array(
+    'type' => 'text',
+    'title' => t('Checkbox title', array(), $options),
+    'default' => format_string('Я даю согласие на <a href="@href" target="_blank" rel="nofollow">обработку моих персональных данных</a>.', array(
+      '@href' => '/privacy-policy',
+    )),
+    'required' => TRUE,
+    'group' => 'fz152_settings',
+    'localize' => TRUE,
+  );
+
   $variables['fz152_privacy_policy_page_enable'] = array(
     'type' => 'boolean',
     'title' => t('Enable privacy policy page', array(), $options),
     'default' => TRUE,
     'description' => t('You can disable this page, if you have manually created.', array(), $options),
-    'group' => 'fz152_settings',
+    'group' => 'fz152_privacy_policy_page',
     'localize' => TRUE,
   );
 
@@ -52,7 +69,7 @@ function fz152_variable_info($options) {
     'title' => t('Privacy policy page title', array(), $options),
     'default' => 'Политика обработки персональных данных',
     'required' => TRUE,
-    'group' => 'fz152_settings',
+    'group' => 'fz152_privacy_policy_page',
     'localize' => TRUE,
   );
 
@@ -62,7 +79,7 @@ function fz152_variable_info($options) {
     'description' => t('Without leading trailing slash. Be careful, it can override existing path.'),
     'default' => 'privacy-policy',
     'required' => TRUE,
-    'group' => 'fz152_settings',
+    'group' => 'fz152_privacy_policy_page',
     'localize' => TRUE,
   );
 
@@ -71,18 +88,7 @@ function fz152_variable_info($options) {
     'title' => t('Privacy policy text', array(), $options),
     'default' => _fz152_get_default_privacy_policy_agreement(),
     'required' => TRUE,
-    'group' => 'fz152_settings',
-    'localize' => TRUE,
-  );
-
-  $variables['fz152_checkbox_title'] = array(
-    'type' => 'string',
-    'title' => t('Checkbox title', array(), $options),
-    'default' => format_string('Я даю согласие на <a href="@href" target="_blank" rel="nofollow">обработку моих персональных данных</a>.', array(
-      '@href' => '/privacy-policy',
-    )),
-    'required' => TRUE,
-    'group' => 'fz152_settings',
+    'group' => 'fz152_privacy_policy_page',
     'localize' => TRUE,
   );
 

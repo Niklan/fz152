@@ -26,7 +26,6 @@ function fz152_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('variable_group_form', 'fz152_settings'),
     'access arguments' => array('administer fz152'),
-    'file' => 'fz152.admin.inc',
   );
 
   $items['admin/config/system/fz152/settings'] = array(
@@ -35,15 +34,28 @@ function fz152_menu() {
     'weight' => -10
   );
 
-  $items['admin/config/system/fz152/forms'] = array(
-    'title' => 'Forms',
+  $items['admin/config/system/fz152/privacy-policy-page'] = array(
+    'title' => 'Page settings',
     'type' => MENU_LOCAL_TASK,
-    'weight' => -5,
+    'weight' => -9,
     'access arguments' => array('administer fz152'),
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('variable_group_form', 'fz152_forms'),
-    'file' => 'fz152.admin.inc',
+    'page arguments' => array('variable_group_form', 'fz152_privacy_policy_page'),
   );
+
+  $modules_info = fz152_info();
+  foreach ($modules_info as $path => $values) {
+    if (!empty($values['page callback'])) {
+      $items['admin/config/system/fz152/' . $path] = array(
+        'title' => $values['title'],
+        'type' => MENU_LOCAL_TASK,
+        'weight' => !empty($values['weight']) ? $values['weight'] : 0,
+        'access arguments' => array('administer fz152'),
+        'page callback' => $values['page callback'],
+        'page arguments' => !empty($values['page arguments']) ? $values['page arguments'] : array(),
+      );
+    }
+  }
 
   if(variable_get_value('fz152_enable') && variable_get_value('fz152_privacy_policy_page_enable')) {
     $path = variable_get_value('fz152_privacy_policy_page_path');
@@ -72,8 +84,15 @@ function fz152_privacy_policy_page() {
  */
 function fz152_form_alter(&$form, &$form_state, $form_id) {
   if (variable_get_value('fz152_enable')) {
-    $active_forms = fz152_info();
+    $modules_info = fz152_info();
+    $active_forms = array();
     $pattern_for_forms = '';
+
+    // Parse all active forms.
+    foreach ($modules_info as $k => $v) {
+      $forms_callback = $v['form callback'];
+      $active_forms += $forms_callback();
+    }
 
     // Implode all form id's in a single string. Which will be used for regex.
     foreach ($active_forms as $k => $v) {
@@ -186,5 +205,13 @@ function fz152_info() {
  * Implements hook_fz152_info().
  */
 function fz152_fz152_info() {
-  return fz152_get_forms();
+  return [
+    'forms' => [
+      'title' => 'Forms',
+      'weight' => -8,
+      'form callback' => 'fz152_get_forms',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('variable_group_form', 'fz152_forms'),
+    ],
+  ];
 }
