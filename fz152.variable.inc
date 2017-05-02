@@ -46,9 +46,9 @@ function fz152_variable_info($options) {
 
   $variables['fz152_is_checkbox'] = array(
     'type' => 'boolean',
-    'title' => t('Show only text', array(), $options),
+    'title' => t('Show with checkbox', array(), $options),
     'default' => TRUE,
-    'description' => t('If checked, only text will be printed in form, weithout checkbox.', array(), $options),
+    'description' => t('If checked, text will be printed in form with checkbox.', array(), $options),
     'group' => 'fz152_settings',
     'localize' => TRUE,
   );
@@ -95,7 +95,10 @@ function fz152_variable_info($options) {
   $variables['fz152_privacy_policy_page_text'] = array(
     'type' => 'text_format',
     'title' => t('Privacy policy text', array(), $options),
-    'default' => _fz152_get_default_privacy_policy_agreement(),
+    'default' => array(
+      'value' => _fz152_get_default_privacy_policy_agreement(),
+      'format' => filter_default_format(),
+    ),
     'required' => TRUE,
     'group' => 'fz152_privacy_policy_page',
     'localize' => TRUE,
