@@ -1,8 +1,0 @@
-name = FZ152 — Webform
-description = Integration with webforms.
-core = 7.x
-
-package = FZ152
-
-dependencies[] = fz152
-dependencies[] = webform
