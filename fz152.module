@@ -57,7 +57,7 @@ function fz152_menu() {
     }
   }
 
-  if(variable_get_value('fz152_enable') && variable_get_value('fz152_privacy_policy_page_enable')) {
+  if (variable_get_value('fz152_enable') && variable_get_value('fz152_privacy_policy_page_enable')) {
     $path = variable_get_value('fz152_privacy_policy_page_path');
     $title = variable_get_value('fz152_privacy_policy_page_title');
     $items[$path] = array(
@@ -115,15 +115,25 @@ function fz152_form_alter(&$form, &$form_state, $form_id) {
       }
 
       // Finally we add checkbox.
-      $form['fz152_agreement'] = array(
-        '#type' => 'checkbox',
-        '#required' => TRUE,
-        '#title' => variable_get_value('fz152_checkbox_title'),
-        // HTML5 support.
-        '#attributes' => array(
-          'required' => 'required',
-        ),
-      );
+      $is_checkbox = variable_get_value('fz152_is_checkbox');
+      if ($is_checkbox) {
+        $form['fz152_agreement'] = array(
+          '#type' => 'checkbox',
+          '#required' => TRUE,
+          '#title' => variable_get_value('fz152_checkbox_title'),
+          // HTML5 support.
+          '#attributes' => array(
+            'required' => 'required',
+          ),
+        );
+      }
+      else {
+        $form['fz152_agreement'] = array(
+          '#name' => 'fz152-agreement',
+          '#type' => 'item',
+          '#markup' => variable_get_value('fz152_checkbox_title'),
+        );
+      }
 
       if ($checkbox_weight) {
         $form['fz152_agreement']['#weight'] = $checkbox_weight;

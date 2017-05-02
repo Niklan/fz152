@@ -44,6 +44,15 @@ function fz152_variable_info($options) {
     'localize' => TRUE,
   );
 
+  $variables['fz152_is_checkbox'] = array(
+    'type' => 'boolean',
+    'title' => t('Show only text', array(), $options),
+    'default' => TRUE,
+    'description' => t('If checked, only text will be printed in form, weithout checkbox.', array(), $options),
+    'group' => 'fz152_settings',
+    'localize' => TRUE,
+  );
+
   $variables['fz152_checkbox_title'] = array(
     'type' => 'text',
     'title' => t('Checkbox title', array(), $options),
