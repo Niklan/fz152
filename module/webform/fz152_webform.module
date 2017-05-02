@@ -10,15 +10,15 @@
  * Implements hook_fz152_info().
  */
 function fz152_webform_fz152_info() {
-  return [
-    'webform' => [
+  return array(
+    'webform' => array(
       'title' => 'Webform',
       'weight' => 10,
       'form callback' => 'fz152_webform_get_forms',
       'page callback' => 'drupal_get_form',
-      'page arguments' => ['variable_group_form', 'fz152_webform'],
-    ],
-  ];
+      'page arguments' => array('variable_group_form', 'fz152_webform'),
+    ),
+  );
 }
 
 /**
@@ -49,15 +49,15 @@ function fz152_webform_get_webform_info() {
  */
 function fz152_webform_get_forms() {
   $webforms = fz152_webform_get_webform_info();
-  $result = [];
+  $result = array();
   if (!empty($webforms)) {
     foreach ($webforms as $webform) {
       $webform_id = $webform['id'];
       if (variable_get_value('fz152_webform_form_' . $webform_id . '_enable')) {
-        $result[] = [
+        $result[] = array(
           'form_id' => 'webform_client_form_' . $webform_id,
           'weight' => '',
-        ];
+        );
       }
     }
   }

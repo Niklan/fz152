@@ -10,15 +10,15 @@
  * Implements hook_fz152_info().
  */
 function fz152_entityform_fz152_info() {
-  return [
-    'entityform' => [
+  return array(
+    'entityform' => array(
       'title' => 'Entityform',
       'weight' => 10,
       'form callback' => 'fz152_entityform_get_forms',
       'page callback' => 'drupal_get_form',
-      'page arguments' => ['variable_group_form', 'fz152_entityform'],
-    ],
-  ];
+      'page arguments' => array('variable_group_form', 'fz152_entityform'),
+    ),
+  );
 }
 
 /**
@@ -29,13 +29,13 @@ function fz152_entityform_get_entityform_bundle_info() {
   $result = &drupal_static(__FUNCTION__);
   if (!isset($result)) {
     $entityform_info = entity_get_info('entityform');
-    $result = [];
+    $result = array();
     if (!empty($entityform_info['bundles'])) {
       foreach ($entityform_info['bundles'] as $bundle => $bundle_info) {
-        $result[] = [
+        $result[] = array(
           'name' => $bundle,
           'label' => $bundle_info['label'],
-        ];
+        );
       }
     }
   }
@@ -48,15 +48,15 @@ function fz152_entityform_get_entityform_bundle_info() {
  */
 function fz152_entityform_get_forms() {
   $entityforms = fz152_entityform_get_entityform_bundle_info();
-  $result = [];
+  $result = array();
   if (!empty($entityforms)) {
     foreach ($entityforms as $entityform) {
       $entityform_name = $entityform['name'];
       if (variable_get_value('fz152_entityform_form_' . $entityform_name . '_enable')) {
-        $result[] = [
+        $result[] = array(
           'form_id' => $entityform_name . '_entityform_edit_form',
           'weight' => variable_get_value('fz152_entityform_form_' . $entityform_name . '_weight'),
-        ];
+        );
       }
     }
   }
@@ -74,11 +74,11 @@ function fz152_entityform_form_variable_group_form_alter(&$form, &$form_state, $
     if (!empty($entityforms)) {
       foreach ($entityforms as $entityform) {
         $entityform_name = $entityform['name'];
-        $form['fz152_entityform_form_' . $entityform_name . '_weight']['#states']['visible'] = [
-          'input[name="fz152_entityform_form_' . $entityform_name . '_enable"]' => [
+        $form['fz152_entityform_form_' . $entityform_name . '_weight']['#states']['visible'] = array(
+          'input[name="fz152_entityform_form_' . $entityform_name . '_enable"]' => array(
             'checked' => TRUE,
-          ],
-        ];
+          ),
+        );
       }
     }
   }

@@ -205,13 +205,13 @@ function fz152_info() {
  * Implements hook_fz152_info().
  */
 function fz152_fz152_info() {
-  return [
-    'forms' => [
+  return array(
+    'forms' => array(
       'title' => 'Forms',
       'weight' => -8,
       'form callback' => 'fz152_get_forms',
       'page callback' => 'drupal_get_form',
       'page arguments' => array('variable_group_form', 'fz152_forms'),
-    ],
-  ];
+    ),
+  );
 }
