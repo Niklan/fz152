@@ -161,15 +161,16 @@ function fz152_form_alter(&$form, &$form_state, $form_id) {
 function fz152_get_forms() {
   $forms_value = variable_get_value('fz152_forms');
   $forms = array();
-
-  foreach (explode(PHP_EOL, $forms_value) as $form_id) {
-    $form_id_exploded = explode('|', $form_id);
-    $forms[] = array(
-      'form_id' => $form_id_exploded[0],
-      'weight' => isset($form_id_exploded[1]) ? $form_id_exploded[1] : NULL,
-    );
+  if (!empty($forms_value)) {
+    foreach (explode(PHP_EOL, $forms_value) as $form_id) {
+      $form_id_exploded = explode('|', $form_id);
+      $forms[] = array(
+        'form_id' => $form_id_exploded[0],
+        'weight' => isset($form_id_exploded[1]) ? $form_id_exploded[1] : NULL,
+      );
+    }
   }
-
+  
   return $forms;
 }
 
