@@ -76,7 +76,7 @@ function fz152_variable_info($options) {
   $variables['fz152_privacy_policy_page_title'] = array(
     'type' => 'string',
     'title' => t('Privacy policy page title', array(), $options),
-    'default' => 'Политика обработки персональных данных',
+    'default' => 'Положение о защите персональных данных',
     'required' => TRUE,
     'group' => 'fz152_privacy_policy_page',
     'localize' => TRUE,
@@ -118,7 +118,7 @@ function fz152_variable_info($options) {
  * Returns default agreement for privacy policy page.
  */
 function _fz152_get_default_privacy_policy_agreement() {
-  $output = '<h1>Положение о защите персональных данных</h1>' . PHP_EOL;
+  $output = '';
   $output .= '<p><strong>1. Общие положения</strong></p>' . PHP_EOL;
   $output .= '<p>1.1. Настоящие Положение является официальным документом Администрации сайта, на котором оно размещено и определяет порядок обработки и защиты информации о физических лицах, пользующихся услугами интернет-сайта (далее - Сайт) и его сервисов (далее - Пользователи).</p>' . PHP_EOL;
   $output .= '<p>1.2. Отношения, связанные со сбором, хранением, распространением и защитой информации о пользователях Сайта, регулируются настоящим Положением, иными официальными документами Администрации Сайта и действующим законодательством Российской Федерации.</p>' . PHP_EOL;
