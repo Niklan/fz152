@@ -1,0 +1,5 @@
+services:
+  fz152.route_subscriber:
+    class: Drupal\fz152\Routing\fz152RouteSubscriber
+    tags:
+      - { name: event_subscriber }

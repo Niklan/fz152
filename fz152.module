@@ -4,3 +4,95 @@
  * @file
  * Main file for hooks and custom functions.
  */
+
+/**
+ * Return array with form_id's and weight for checkbox if available.
+ *
+ * @example
+ * array(
+ *  0 => array(
+ *    'form_id' => 'news_node_form',
+ *    'weight' => 99,
+ *  ),
+ *  1 => array(
+ *    'form_id' => 'article_node_form',
+ *    'weight' => NULL,
+ *  ),
+ * );
+ * @endexample
+ */
+function fz152_get_forms() {
+  $config = \Drupal::config('fz152.settings');
+  $forms_value = $config->get('forms');
+  $forms = [];
+  if (!empty($forms_value)) {
+    foreach (explode(PHP_EOL, $forms_value) as $form_id) {
+      $form_id_exploded = explode('|', $form_id);
+      $forms[] = [
+        'form_id' => $form_id_exploded[0],
+        'weight' => isset($form_id_exploded[1]) ? $form_id_exploded[1] : NULL,
+      ];
+    }
+  }
+
+  return $forms;
+}
+
+/**
+ * Check is provided form id is match any of patterns.
+ */
+function fz152_form_id_matches($form_id, $patterns) {
+  // Replace new lines by "|" and wildcard by ".*".
+  $to_replace = array(
+    '/(\r\n?|\n)/', // newlines
+    '/\\\\\*/', // asterisks
+  );
+
+  $replacements = array(
+    '|',
+    '.*',
+  );
+
+  $patterns_quoted = preg_quote($patterns, '/');
+  $pattern = '/^(' . preg_replace($to_replace, $replacements, $patterns_quoted) . ')$/';
+  preg_match($pattern, $form_id, $matches);
+  return $matches;
+}
+
+function fz152_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $config = \Drupal::config('fz152.settings');
+  $active_forms = [];
+  if ($config->get('enable')) {
+    $forms = fz152_get_forms();
+    $pattern_for_forms = '';
+    foreach ($forms as $current_form) {
+      $pattern_for_forms .= $current_form['form_id'] . PHP_EOL;
+    }
+    $matches = fz152_form_id_matches($form_id, $pattern_for_forms);
+    if (!empty($matches)) {
+      // Finally we add checkbox.
+      $is_checkbox = $config->get('is_checkbox');
+      if ($is_checkbox) {
+        $form['fz152_agreement'] = array(
+          '#type' => 'checkbox',
+          '#required' => TRUE,
+          '#title' => $config->get('checkbox_title'),
+          // HTML5 support.
+          '#attributes' => array(
+            'required' => 'required',
+          ),
+          '#weight' => 100,
+        );
+      }
+      else {
+        $form['fz152_agreement'] = array(
+          '#name' => 'fz152-agreement',
+          '#type' => 'item',
+          '#markup' => $config->get('checkbox_title'),
+          '#weight' => 100,
+        );
+      }
+      $form['actions']['#weight'] = 110;
+    }
+  }
+}

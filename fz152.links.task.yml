@@ -1,0 +1,16 @@
+fz152.admin:
+  route_name: fz152.settings
+  title: 'Settings'
+  base_route: fz152.settings
+
+fz152.admin.page_settings:
+  route_name: fz152.page_settings
+  title: 'Page settings'
+  base_route: fz152.settings
+  weight: 100
+
+fz152.admin.forms_settings:
+  route_name: fz152.forms_settings
+  title: 'Forms settings'
+  base_route: fz152.settings
+  weight: 150

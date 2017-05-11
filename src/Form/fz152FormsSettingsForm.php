@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Contains \Drupal\fz152\Form\fz152FormsSettingsForm.
+ */
+
+namespace Drupal\fz152\Form;
+
+use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Configure example settings for this site.
+ */
+class fz152FormsSettingsForm extends ConfigFormBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFormId() {
+    return 'fz152_forms_settings';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getEditableConfigNames() {
+    return [
+      'fz152.settings',
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = $this->config('fz152.settings');
+
+    $form['forms'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Forms to apply checkbox'),
+      '#default_value' => $config->get('forms'),
+      '#description' => $this->t('Each form id on the new line, this names are supports wildcard: *_node_form. Also you can specify weight for checkbox: node_edit_news|99.'),
+    ];
+    return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    // Retrieve the configuration and set new values
+    $this->config('fz152.settings')
+        ->set('forms', $form_state->getValue('forms'))
+        ->save();
+
+    parent::submitForm($form, $form_state);
+  }
+
+}
