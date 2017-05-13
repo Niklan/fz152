@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\fz152\Form\fz152PageSettingsForm.
+ * Contains \Drupal\fz152\Form\Fz152SettingsPage.
  */
 
 namespace Drupal\fz152\Form;
@@ -13,7 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Configure example settings for this site.
  */
-class fz152PageSettingsForm extends ConfigFormBase {
+class Fz152SettingsPage extends ConfigFormBase {
 
   /**
    * {@inheritdoc}

@@ -12,7 +12,7 @@ use Drupal\Core\Controller\ControllerBase;
 /**
  * Privacy policy page controller.
  */
-class fz152PolicyPageController extends ControllerBase {
+class Fz152PrivacyPolicyPage extends ControllerBase {
 
   /**
    * {@inheritdoc}

@@ -3,3 +3,7 @@ services:
     class: Drupal\fz152\Routing\fz152RouteSubscriber
     tags:
       - { name: event_subscriber }
+
+  plugin.manager.fz152:
+    class: Drupal\fz152\Fz152PluginManager
+    parent: default_plugin_manager

@@ -59,17 +59,37 @@ function fz152_form_id_matches($form_id, $patterns) {
   return $matches;
 }
 
+/**
+ * Implements hook_form_alter().
+ */
 function fz152_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   $config = \Drupal::config('fz152.settings');
+  $plugin_service = \Drupal::service('plugin.manager.fz152');
   $active_forms = [];
+  foreach ($plugin_service->getDefinitions() as $plugin_id => $plugin) {
+    $instance = $plugin_service->createInstance($plugin_id);
+    $active_forms = array_merge($active_forms, $instance->getForms());
+  }
   if ($config->get('enable')) {
-    $forms = fz152_get_forms();
     $pattern_for_forms = '';
-    foreach ($forms as $current_form) {
+    foreach ($active_forms as $current_form) {
       $pattern_for_forms .= $current_form['form_id'] . PHP_EOL;
     }
     $matches = fz152_form_id_matches($form_id, $pattern_for_forms);
     if (!empty($matches)) {
+      $matched_form_id = $matches[0];
+      // Find checkbox weight by matched form id with available in array.
+      // Because we have support for wildcards, this is necessary.
+      $checkbox_weight = NULL;
+      foreach ($active_forms as $k => $v) {
+        $current_form_id = str_replace('*', '.*', $v['form_id']);
+        $pattern = "/$current_form_id/";
+        if (preg_match($pattern, $matched_form_id)) {
+          $checkbox_weight = $v['weight'];
+          break;
+        }
+      }
+
       // Finally we add checkbox.
       $is_checkbox = $config->get('is_checkbox');
       if ($is_checkbox) {
@@ -81,7 +101,7 @@ function fz152_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $fo
           '#attributes' => array(
             'required' => 'required',
           ),
-          '#weight' => 100,
+          '#weight' => $checkbox_weight,
         );
       }
       else {
@@ -89,7 +109,7 @@ function fz152_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $fo
           '#name' => 'fz152-agreement',
           '#type' => 'item',
           '#markup' => $config->get('checkbox_title'),
-          '#weight' => 100,
+          '#weight' => $checkbox_weight,
         );
       }
       $form['actions']['#weight'] = 110;
