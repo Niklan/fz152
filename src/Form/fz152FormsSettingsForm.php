@@ -52,8 +52,8 @@ class fz152FormsSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Retrieve the configuration and set new values
     \Drupal::configFactory()->getEditable('fz152.forms')
-        ->set('forms', $form_state->getValue('forms'))
-        ->save();
+      ->set('forms', $form_state->getValue('forms'))
+      ->save();
 
     parent::submitForm($form, $form_state);
   }

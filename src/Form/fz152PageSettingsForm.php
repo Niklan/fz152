@@ -36,20 +36,20 @@ class fz152PageSettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('fz152.privacy_policy_page');
-     $form['enabled'] = [
+    $form['enabled'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable privacy policy page'),
-      '#default_value' => $config->get('enable')
+      '#default_value' => $config->get('enable'),
     ];
     $form['path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Privacy policy page path'),
-      '#default_value' => $config->get('path')
+      '#default_value' => $config->get('path'),
     ];
     $form['title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Privacy policy page title'),
-      '#default_value' => $config->get('title')
+      '#default_value' => $config->get('title'),
     ];
     $text = $config->get('text');
     $default_text = $text['value'];
@@ -70,11 +70,11 @@ class fz152PageSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Retrieve the configuration and set new values
     \Drupal::configFactory()->getEditable('fz152.privacy_policy_page')
-        ->set('enable', $form_state->getValue('enabled'))
-        ->set('path', $form_state->getValue('path'))
-        ->set('title', $form_state->getValue('title'))
-        ->set('text', $form_state->getValue('text'))
-        ->save();
+      ->set('enable', $form_state->getValue('enabled'))
+      ->set('path', $form_state->getValue('path'))
+      ->set('title', $form_state->getValue('title'))
+      ->set('text', $form_state->getValue('text'))
+      ->save();
 
     // Rebuilding the menu router cache
     \Drupal::service('router.builder')->rebuild();

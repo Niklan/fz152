@@ -5,9 +5,11 @@ fz152.settings:
     enable:
       type: boolean
       label: 'Enable functionality'
+      translatable: true
     is_checkbox:
       type: boolean
       label: 'Show with checkbox'
+      translatable: true
     checkbox_title:
       type: text
       lalbel: 'Checkbox label'
@@ -19,27 +21,30 @@ fz152.privacy_policy_page:
     enable:
       type: boolean
       label: 'Enable privacy policy page'
+      translatable: true
     title:
-      type: text
+      type: string
       label: 'Page title'
+      translatable: true
     path:
       type: string
       label: 'Page path'
+      translatable: true
     text:
       type: mapping
       label: 'Page text'
       mapping:
         value:
           type: text
-          label: 'Page text'
+          label: 'Value'
         format:
-          type: filter
-          label: 'Format type'
+          type: string
+          label: 'Filter'
 
 fz152.forms:
   type: config_object
   label: 'FZ152 — forms'
   mapping:
     forms:
-      type: string
+      type: text
       label: 'Forms'
