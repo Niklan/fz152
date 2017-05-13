@@ -35,23 +35,23 @@ class fz152PageSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('fz152.settings');
+    $config = $this->config('fz152.privacy_policy_page');
      $form['enabled'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable privacy policy page'),
-      '#default_value' => $config->get('privacy_policy_page.enable')
+      '#default_value' => $config->get('enable')
     ];
     $form['path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Privacy policy page path'),
-      '#default_value' => $config->get('privacy_policy_page.path')
+      '#default_value' => $config->get('path')
     ];
     $form['title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Privacy policy page title'),
-      '#default_value' => $config->get('privacy_policy_page.title')
+      '#default_value' => $config->get('title')
     ];
-    $text = $config->get('privacy_policy_page.text');
+    $text = $config->get('text');
     $default_text = $text['value'];
     $default_format = isset($text['format']) ? $text['format'] : filter_default_format();
 
@@ -69,11 +69,11 @@ class fz152PageSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Retrieve the configuration and set new values
-    $this->config('fz152.settings')
-        ->set('privacy_policy_page.enable', $form_state->getValue('enabled'))
-        ->set('privacy_policy_page.path', $form_state->getValue('path'))
-        ->set('privacy_policy_page.title', $form_state->getValue('title'))
-        ->set('privacy_policy_page.text', $form_state->getValue('text'))
+    \Drupal::configFactory()->getEditable('fz152.privacy_policy_page')
+        ->set('enable', $form_state->getValue('enabled'))
+        ->set('path', $form_state->getValue('path'))
+        ->set('title', $form_state->getValue('title'))
+        ->set('text', $form_state->getValue('text'))
         ->save();
 
     // Rebuilding the menu router cache

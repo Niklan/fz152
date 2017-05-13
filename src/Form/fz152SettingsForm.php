@@ -61,7 +61,7 @@ class fz152SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Retrieve the configuration and set new values
-    $this->config('fz152.settings')
+    \Drupal::configFactory()->getEditable('fz152.settings')
         ->set('enable', $form_state->getValue('enable'))
         ->set('is_checkbox', $form_state->getValue('is_checkbox'))
         ->set('checkbox_title', $form_state->getValue('checkbox_title'))

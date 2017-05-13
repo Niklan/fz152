@@ -35,7 +35,7 @@ class fz152FormsSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('fz152.settings');
+    $config = $this->config('fz152.forms');
 
     $form['forms'] = [
       '#type' => 'textarea',
@@ -51,7 +51,7 @@ class fz152FormsSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Retrieve the configuration and set new values
-    $this->config('fz152.settings')
+    \Drupal::configFactory()->getEditable('fz152.forms')
         ->set('forms', $form_state->getValue('forms'))
         ->save();
 

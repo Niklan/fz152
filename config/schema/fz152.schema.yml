@@ -1,0 +1,45 @@
+fz152.settings:
+  type: config_object
+  label: 'FZ152 — settings'
+  mapping:
+    enable:
+      type: boolean
+      label: 'Enable functionality'
+    is_checkbox:
+      type: boolean
+      label: 'Show with checkbox'
+    checkbox_title:
+      type: text
+      lalbel: 'Checkbox label'
+
+fz152.privacy_policy_page:
+  type: config_object
+  label: 'FZ152 — privacy policy page'
+  mapping:
+    enable:
+      type: boolean
+      label: 'Enable privacy policy page'
+    title:
+      type: text
+      label: 'Page title'
+    path:
+      type: string
+      label: 'Page path'
+    text:
+      type: mapping
+      label: 'Page text'
+      mapping:
+        value:
+          type: text
+          label: 'Page text'
+        format:
+          type: filter
+          label: 'Format type'
+
+fz152.forms:
+  type: config_object
+  label: 'FZ152 — forms'
+  mapping:
+    forms:
+      type: string
+      label: 'Forms'
