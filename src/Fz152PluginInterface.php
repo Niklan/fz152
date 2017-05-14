@@ -24,6 +24,7 @@ interface Fz152PluginInterface extends PluginInspectionInterface {
    *   - "path": The tab path additional: /admin/config/fz152/[PATH].
    *   - "title": String with title for tab and page with settings.
    *   - "form": As in routing.yml file must contains form Class.
+   *   - "weight": Weight for tab on page.
    */
   public function getSettingsPage();
 

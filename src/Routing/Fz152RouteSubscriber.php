@@ -14,7 +14,7 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * Listens to the dynamic trousers route events.
  */
-class fz152RouteSubscriber extends RouteSubscriberBase {
+class Fz152RouteSubscriber extends RouteSubscriberBase {
 
   /**
    * {@inheritdoc}

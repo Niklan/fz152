@@ -116,3 +116,19 @@ function fz152_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $fo
     }
   }
 }
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ */
+function fz152_menu_links_discovered_alter(&$links) {
+  $plugin_service = \Drupal::service('plugin.manager.fz152');
+  foreach ($plugin_service->getDefinitions() as $plugin_id => $plugin) {
+    $instance = $plugin_service->createInstance($plugin_id);
+    $route_info = $instance->getSettingsPage();
+    $links['fz152.admin.' . $plugin_id] = [
+      'title' => $route_info['title'],
+      'route_name' => 'fz152.settings.' . $plugin_id,
+      'parent' => 'fz152.admin',
+    ];
+  }
+}

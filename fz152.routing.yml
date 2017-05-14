@@ -14,18 +14,12 @@ fz152.page_settings:
   requirements:
     _permission: 'administer fz152'
 
-fz152.forms_settings:
-  path: '/admin/config/system/fz152/forms'
-  defaults:
-    _form: '\Drupal\fz152\Form\Fz152SettingsForms'
-    _title: 'Adjust settings for FZ152'
-  requirements:
-    _permission: 'administer fz152'
-
-
 fz152.privacy_policy_page:
   path: '/privacy-policy'
   defaults:
     _controller: '\Drupal\fz152\Controller\Fz152PrivacyPolicyPage::content'
   requirements:
     _permission: 'access content'
+
+route_callbacks:
+  - '\Drupal\fz152\Routing\Fz152Routes::routes'

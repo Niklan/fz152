@@ -9,9 +9,3 @@ fz152.admin.page_settings:
   route_name: fz152.page_settings
   description: 'Configure fz152 privacy policy page settings'
   parent: fz152.admin
-
-fz152.admin.forms_settings:
-  title: 'Forms'
-  route_name: fz152.forms_settings
-  description: 'Configure fz152 forms settings'
-  parent: fz152.admin

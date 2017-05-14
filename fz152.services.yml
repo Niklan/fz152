@@ -1,6 +1,6 @@
 services:
   fz152.route_subscriber:
-    class: Drupal\fz152\Routing\fz152RouteSubscriber
+    class: Drupal\fz152\Routing\Fz152RouteSubscriber
     tags:
       - { name: event_subscriber }
 

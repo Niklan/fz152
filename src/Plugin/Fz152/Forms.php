@@ -7,7 +7,7 @@ use Drupal\fz152\Fz152PluginBase;
 
 /**
  * @Fz152(
- *   id="forms",
+ *   id = "forms",
  * )
  */
 class Forms extends Fz152PluginBase {
@@ -20,6 +20,7 @@ class Forms extends Fz152PluginBase {
       'path' => 'forms',
       'title' => 'Forms',
       'form' => '\Drupal\fz152\Form\Fz152SettingsForms',
+      'weight' => 0,
     ];
   }
 
