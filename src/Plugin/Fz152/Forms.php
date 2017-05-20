@@ -24,6 +24,9 @@ class Forms extends Fz152PluginBase {
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getForms() {
     $config = \Drupal::config('fz152.forms');
     $forms_settings = $config->get('forms');
@@ -39,4 +42,5 @@ class Forms extends Fz152PluginBase {
     }
     return $forms;
   }
+
 }

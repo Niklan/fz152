@@ -1,0 +1,6 @@
+# @TODO figure out how it works with dynamic configs.
+fz152_contact.settings:
+  title: 'FZ152 — Contact'
+  base_route_name: fz152.settings.contact
+  names:
+    - fz152_contact.settings.*
