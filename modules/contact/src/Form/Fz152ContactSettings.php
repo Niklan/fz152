@@ -56,7 +56,7 @@ class Fz152ContactSettings extends ConfigFormBase {
         '#type' => 'number',
         '#title' => 'Weight of element',
         '#default_value' => $config->get('weight'),
-        '#state' => [
+        '#states' => [
           'visible' => [
             'input[name="contact_' . $bundle_name . '_enable"]' => [
               'checked' => TRUE,
@@ -78,6 +78,9 @@ class Fz152ContactSettings extends ConfigFormBase {
       \Drupal::configFactory()->getEditable("fz152_contact.settings.$bundle_name")
         ->set('enabled', $form_state->getValue('contact_' . $bundle_name . '_enable'))
         ->set('weight', $form_state->getValue('contact_' . $bundle_name . '_weight'))
+        // Because all fz15 modules configs comes with Russian configs as
+        // default. It's necessary to work config_translation module.
+        ->set('langcode', 'ru')
         ->save();
     }
     parent::submitForm($form, $form_state);

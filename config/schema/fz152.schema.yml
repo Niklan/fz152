@@ -2,6 +2,9 @@ fz152.settings:
   type: config_object
   label: 'FZ152 — settings'
   mapping:
+    langcode:
+      type: string
+      label: 'Language code'
     enable:
       type: boolean
       label: 'Enable functionality'
@@ -18,6 +21,9 @@ fz152.privacy_policy_page:
   type: config_object
   label: 'FZ152 — privacy policy page'
   mapping:
+    langcode:
+        type: string
+        label: 'Language code'
     enable:
       type: boolean
       label: 'Enable privacy policy page'
@@ -45,6 +51,9 @@ fz152.forms:
   type: config_object
   label: 'FZ152 — forms'
   mapping:
+    langcode:
+      type: string
+      label: 'Language code'
     forms:
       type: text
       label: 'Forms'
