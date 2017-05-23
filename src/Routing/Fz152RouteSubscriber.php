@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fz152\Controller\fz152RouteSubscriber.
- */
-
 namespace Drupal\fz152\Routing;
 
 use Drupal\Core\Routing\RouteSubscriberBase;
@@ -20,9 +15,9 @@ class Fz152RouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
-    $config = \Drupal::config('fz152.settings');
-    $is_enabled = $config->get('privacy_policy_page.enable');
-    $path = $config->get('privacy_policy_page.path');
+    $config = \Drupal::config('fz152.privacy_policy_page');
+    $is_enabled = $config->get('enable');
+    $path = $config->get('path');
 
     if ($is_enabled) {
       if ($route = $collection->get('fz152.privacy_policy_page')) {
