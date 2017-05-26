@@ -31,4 +31,15 @@ class Fz152PrivacyPolicyPage extends ControllerBase {
     return $output;
   }
 
+  /**
+   * Return page title for router name.
+   *
+   * @return string
+   */
+  public function title() {
+    $config = \Drupal::config('fz152.privacy_policy_page');
+
+    return $config->get('title');
+  }
+
 }
