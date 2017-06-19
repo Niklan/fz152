@@ -1,0 +1,8 @@
+name = FZ152 — Commerce Checkout
+description = Integration with Commerce Checkout.
+core = 7.x
+
+package = FZ152
+
+dependencies[] = fz152
+dependencies[] = commerce_checkout

@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * Implements hook_commerce_checkout_pane_info().
+ */
+function fz152_commerce_checkout_commerce_checkout_pane_info() {
+  $checkout_panes = array();
+
+  $checkout_panes['fz152_commerce_checkout_pane'] = array(
+    'name' => t('FZ152 pane'),
+    'base' => 'fz152_commerce_checkout_pane',
+    'page' => 'checkout',
+    'locked' => FALSE,
+    'review' => FALSE,
+    'weight' => 99,
+  );
+
+  return $checkout_panes;
+}
+
+/**
+ * Checkout pane callback: returns a pane with checkbox inside.
+ */
+function fz152_commerce_checkout_pane_checkout_form($form, &$form_state, $checkout_pane, $order) {
+  $pane_form = array();
+
+  // Otherwise add any enabled checkout panes that are visible on review.
+  $pane_form['fz152_agreement'] = array(
+    '#type' => 'checkbox',
+    '#required' => TRUE,
+    '#title' => variable_get_value('fz152_checkbox_title'),
+    // HTML5 support.
+    /* '#attributes' => array(
+      'required' => 'required',
+    ),*/
+  );
+
+  return $pane_form;
+}
