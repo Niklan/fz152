@@ -4,3 +4,4 @@ package: FZ152
 
 type: module
 core: 8.x
+configure: fz152.settings
