@@ -69,6 +69,9 @@ function fz152_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $fo
             'required' => 'required',
           ),
           '#weight' => $checkbox_weight,
+          '#element_validate' => [
+            'fz152_agreement_element_validate',
+          ],
         );
       }
       else {
@@ -97,5 +100,26 @@ function fz152_menu_links_discovered_alter(&$links) {
       'route_name' => 'fz152.settings.' . $plugin_id,
       'parent' => 'fz152.admin',
     ];
+  }
+}
+
+/**
+ * Custom validation for FZ152 agreement checkbox.
+ *
+ * The common usage of element is contain HTML in label of element. When user
+ * submit the form without checking this element, the default form throws error
+ * with HTML in it, so, this is fixes the with error when element is not
+ * checked.
+ *
+ * @param array $element
+ *   Form element to be validated.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Current form state.
+ * @param string $form_id
+ *   Submitted form id.
+ */
+function fz152_agreement_element_validate(array &$element, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if (!$form_state->getValue('fz152_agreement')) {
+    $form_state->setError($element, t('You must agree with privacy policy.'));
   }
 }
