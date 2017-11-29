@@ -1,13 +1,14 @@
 <?php
 
-/**
- * Interface for Fz152 Plugins.
- */
-
 namespace Drupal\fz152;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
 
+/**
+ * Provides an interface for fz152 settings plugins.
+ *
+ * @todo Use \Drupal\Core\Plugin\PluginWithFormsInterface
+ */
 interface Fz152PluginInterface extends PluginInspectionInterface {
 
   /**
@@ -17,6 +18,7 @@ interface Fz152PluginInterface extends PluginInspectionInterface {
 
   /**
    * If you want to add settings as tab to main settings you can define it here.
+   *
    * Otherwise define the page by yourself.
    *
    * @return array
@@ -29,6 +31,8 @@ interface Fz152PluginInterface extends PluginInspectionInterface {
   public function getSettingsPage();
 
   /**
+   * Returns a list of form to and confirmation for sending private data.
+   *
    * @return array
    *   Array with form names to add checkbox:
    *   - "form_id": The form id. Can contains wildcards "*".

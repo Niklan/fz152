@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fz152\Form\Fz152SettingsForms.
- */
-
 namespace Drupal\fz152\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
@@ -50,8 +45,7 @@ class Fz152SettingsForms extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Retrieve the configuration and set new values
-    \Drupal::configFactory()->getEditable('fz152.forms')
+    $this->config('fz152.forms')
       ->set('forms', $form_state->getValue('forms'))
       ->save();
 

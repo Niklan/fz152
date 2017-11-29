@@ -2,10 +2,12 @@
 
 namespace Drupal\fz152\Plugin\Fz152;
 
-use Drupal\fz152\Annotation\Fz152;
+use Drupal\fz152\Form\Fz152SettingsForms;
 use Drupal\fz152\Fz152PluginBase;
 
 /**
+ * Provides an annotated Fz152 plugin for config forms.
+ *
  * @Fz152(
  *   id = "forms",
  * )
@@ -19,7 +21,7 @@ class Forms extends Fz152PluginBase {
     return [
       'path' => 'forms',
       'title' => 'Forms',
-      'form' => '\Drupal\fz152\Form\Fz152SettingsForms',
+      'form' => Fz152SettingsForms::class,
       'weight' => 0,
     ];
   }

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fz152\Form\Fz152SettingsPage.
- */
-
 namespace Drupal\fz152\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
@@ -68,15 +63,14 @@ class Fz152SettingsPage extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Retrieve the configuration and set new values
-    \Drupal::configFactory()->getEditable('fz152.privacy_policy_page')
+    $this->config('fz152.privacy_policy_page')
       ->set('enable', $form_state->getValue('enabled'))
       ->set('path', $form_state->getValue('path'))
       ->set('title', $form_state->getValue('title'))
       ->set('text', $form_state->getValue('text'))
       ->save();
 
-    // Rebuilding the menu router cache
+    // Rebuilding the menu router cache to register routes for settings forms.
     \Drupal::service('router.builder')->rebuild();
     drupal_set_message($this->t('Menu router cache data rebuilded.'));
 

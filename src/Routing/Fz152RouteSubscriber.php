@@ -2,8 +2,8 @@
 
 namespace Drupal\fz152\Routing;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\RouteSubscriberBase;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
@@ -12,20 +12,37 @@ use Symfony\Component\Routing\RouteCollection;
 class Fz152RouteSubscriber extends RouteSubscriberBase {
 
   /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Constructs a Fz152RouteSubscriber object.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
+   *   The config factory.
+   */
+  public function __construct(ConfigFactoryInterface $config) {
+    $this->configFactory = $config;
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
-    $config = \Drupal::config('fz152.privacy_policy_page');
-    $is_enabled = $config->get('enable');
-    $path = $config->get('path');
+    // Try to get the route from the current collection.
+    $name = 'fz152.privacy_policy_page';
+    if ($route = $collection->get($name)) {
+      $config = $this->configFactory->get($name);
 
-    if ($is_enabled) {
-      if ($route = $collection->get('fz152.privacy_policy_page')) {
-        $route->setPath($path);
+      if ($config->get('enable')) {
+        $route->setPath($config->get('path'));
       }
-    }
-    else {
-      $collection->remove('fz152.privacy_policy_page');
+      else {
+        $collection->remove($name);
+      }
     }
   }
 
