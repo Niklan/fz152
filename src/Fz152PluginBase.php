@@ -2,7 +2,7 @@
 
 namespace Drupal\fz152;
 
-use Drupal\Component\Plugin\PluginBase;
+use Drupal\Core\Plugin\PluginBase;
 
 /**
  * Provides a base class for all types of plugin settings.

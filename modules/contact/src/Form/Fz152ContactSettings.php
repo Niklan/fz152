@@ -2,14 +2,23 @@
 
 namespace Drupal\fz152_contact\Form;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfo;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure example settings for this site.
  */
 class Fz152ContactSettings extends ConfigFormBase {
+
+  /**
+   * The entity bundle info.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected $bundleInfo;
 
   /**
    * {@inheritdoc}
@@ -19,23 +28,50 @@ class Fz152ContactSettings extends ConfigFormBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Constructs a \Drupal\system\ConfigFormBase object.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfo $bundleInfo
+   *   The entity bundle info.
    */
-  protected function getEditableConfigNames() {
-    $contact_bundles = $this->getContactBundles();
-    $config_names = [];
-    foreach ($contact_bundles as $bundle_name => $bundle_info) {
-      $config_names[] = "fz152_contact.settings.$bundle_name";
-    }
-    return $config_names;
+  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeBundleInfo $bundleInfo) {
+    parent::__construct($config_factory);
+    $this->bundleInfo = $bundleInfo;
   }
 
   /**
    * {@inheritdoc}
    */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('entity_type.bundle.info')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getEditableConfigNames() {
+    $forms = $this->getContactBundles();
+    $names = [];
+    foreach (array_keys($forms) as $form) {
+      $names[] = "fz152_contact.settings.$form";
+    }
+    return $names;
+  }
+
+  /**
+   * Returns a list of contact forms.
+   *
+   * @return array
+   *   A keyed array of contact forms.
+   *
+   * @see \Drupal\Core\Entity\EntityTypeBundleInfoInterface::getBundleInfo()
+   */
   protected function getContactBundles() {
-    $bundle_info = \Drupal::service('entity_type.bundle.info');
-    return $bundle_info->getBundleInfo('contact_message');
+    return $this->bundleInfo->getBundleInfo('contact_message');
   }
 
   /**
@@ -72,12 +108,12 @@ class Fz152ContactSettings extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $contact_bundles = $this->getContactBundles();
+    $forms = $this->getContactBundles();
 
-    foreach ($contact_bundles as $bundle_name => $bundle_info) {
-      \Drupal::configFactory()->getEditable("fz152_contact.settings.$bundle_name")
-        ->set('enabled', $form_state->getValue('contact_' . $bundle_name . '_enable'))
-        ->set('weight', $form_state->getValue('contact_' . $bundle_name . '_weight'))
+    foreach (array_keys($forms) as $form_name) {
+      $this->config("fz152_contact.settings.$form_name")
+        ->set('enabled', $form_state->getValue('contact_' . $form_name . '_enable'))
+        ->set('weight', $form_state->getValue('contact_' . $form_name . '_weight'))
         // Because all fz15 modules configs comes with Russian configs as
         // default. It's necessary to work config_translation module.
         ->set('langcode', 'ru')
