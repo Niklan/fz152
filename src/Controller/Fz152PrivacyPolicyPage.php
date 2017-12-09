@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\fz152\Controller\fz152PolicyPageController.
- */
-
 namespace Drupal\fz152\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
@@ -15,31 +10,33 @@ use Drupal\Core\Controller\ControllerBase;
 class Fz152PrivacyPolicyPage extends ControllerBase {
 
   /**
-   * {@inheritdoc}
+   * Builds a policy page.
+   *
+   * @return array
+   *   Renderable array.
    */
   public function content() {
-    $config = \Drupal::config('fz152.privacy_policy_page');
-    $output = [];
-    // Set page title
-    $output['#title'] = $config->get('title');
-
-    // Set page content
+    $config = $this->config('fz152.privacy_policy_page');
+    // Build page content.
     $text = $config->get('text');
     $format = isset($text['format']) ? $text['format'] : filter_default_format();
-    $output['#markup'] = check_markup($text['value'], $format);
+    $output['content'] = [
+      '#type' => 'processed_text',
+      '#text' => isset($text['value']) ? $text['value'] : '',
+      '#format' => $format,
+    ];
 
     return $output;
   }
 
   /**
-   * Return page title for router name.
+   * Return configurable page title for router name.
    *
    * @return string
+   *   The configured title.
    */
   public function title() {
-    $config = \Drupal::config('fz152.privacy_policy_page');
-
-    return $config->get('title');
+    return $this->config('fz152.privacy_policy_page')->get('title');
   }
 
 }
